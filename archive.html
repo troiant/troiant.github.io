@@ -97,7 +97,19 @@
   moon.addEventListener("click", function () {
     applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
   });
-  frame.addEventListener("load", function () { applyTheme(themeNow()); });
+  frame.addEventListener("load", function () {
+    try {
+      var doc = frame.contentDocument;
+      if (doc && !doc.getElementById("cb-shell-hide")) {
+        doc.documentElement.classList.add("in-shell");
+        var style = doc.createElement("style");
+        style.id = "cb-shell-hide";
+        style.textContent = "header{display:none!important}";
+        doc.head.appendChild(style);
+      }
+    } catch (e) {}
+    applyTheme(themeNow());
+  });
   function hash() { return (location.hash || "").replace(/^#/, ""); }
   function pick(list) {
     var h = hash();
