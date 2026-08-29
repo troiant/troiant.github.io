@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CapitalBuzz</title>
+<style>
+  :root {
+    --page: #ffffff; --ink: #111111; --muted: #6f6f6c; --line: #e6e6e3;
+    --bar: #ffffff; --chip: #f6f6f4; --chip-on: #111111; --chip-on-ink: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--page); color: var(--ink); }
+  body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+  .bar {
+    height: 48px; padding: 0 16px;
+    border-bottom: 2px solid var(--ink);
+    display: flex; align-items: center; gap: 14px;
+    background: var(--bar);
+  }
+  .brand {
+    display: flex; align-items: center; gap: 8px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.05rem; font-weight: 600; text-decoration: none; color: inherit;
+    flex: 0 0 auto;
+  }
+  .bolt { width: 0.9em; height: 0.9em; display: block; }
+  .dates {
+    display: flex; align-items: center; gap: 6px;
+    overflow-x: auto; min-width: 0; flex: 1;
+    scrollbar-width: none;
+  }
+  .dates::-webkit-scrollbar { display: none; }
+  .dates a {
+    flex: 0 0 auto;
+    padding: 5px 10px; border-radius: 999px;
+    background: var(--chip); color: var(--ink);
+    text-decoration: none; font-size: 0.78rem; font-weight: 600;
+    white-space: nowrap;
+  }
+  .dates a[aria-current="page"] { background: var(--chip-on); color: var(--chip-on-ink); }
+  iframe { display: block; width: 100%; height: calc(100% - 48px); border: 0; background: var(--page); }
+</style>
+</head>
+<body>
+  <nav class="bar">
+    <a class="brand" href="./archive.html">
+      <svg class="bolt" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13 2 4 14h7l-1 8 10-12h-7z"/></svg>
+      CapitalBuzz
+    </a>
+    <div class="dates" id="dates"></div>
+  </nav>
+  <iframe id="frame" title="CapitalBuzz brief"></iframe>
+<script>
+(function () {
+  var frame = document.getElementById("frame");
+  var nav = document.getElementById("dates");
+  function pick(list) {
+    var hash = (location.hash || "").replace(/^#/, "");
+    if (hash) {
+      for (var i = 0; i < list.length; i++) if (list[i].date === hash) return list[i];
+    }
+    return list[0];
+  }
+  function draw(list, current) {
+    nav.innerHTML = "";
+    list.forEach(function (item) {
+      var a = document.createElement("a");
+      a.href = "#" + item.date;
+      a.textContent = item.label;
+      if (item.date === current.date) a.setAttribute("aria-current", "page");
+      nav.appendChild(a);
+    });
+    frame.src = current.file;
+    document.title = "CapitalBuzz — " + current.label;
+  }
+  function load(list) {
+    if (!list || !list.length) return;
+    draw(list, pick(list));
+    window.onhashchange = function () { draw(list, pick(list)); };
+  }
+  fetch("briefs.json", { cache: "no-store" })
+    .then(function (r) { return r.json(); })
+    .then(load)
+    .catch(function () {
+      load([{ date: "2026-08-28", label: "Fri Aug 28", file: "capitalbuzz-2026-08-28.html" }]);
+    });
+})();
+</script>
+</body>
+</html>
