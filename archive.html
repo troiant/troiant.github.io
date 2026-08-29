@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
 <title>CapitalBuzz</title>
 <style>
   :root {
@@ -16,9 +17,10 @@
     --surface: #171717;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; background: var(--page); color: var(--ink); }
+  html, body { margin: 0; min-height: 100%; background: var(--page); color: var(--ink); }
   body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
   .bar {
+    position: sticky; top: 0; z-index: 40;
     height: 48px; padding: 0 16px;
     border-bottom: 2px solid var(--ink);
     display: flex; align-items: center; gap: 14px;
@@ -55,8 +57,9 @@
   .icon-sun { display: none; }
   html[data-theme="dark"] .icon-moon { display: none; }
   html[data-theme="dark"] .icon-sun { display: block; }
-  iframe { display: block; width: 100%; height: calc(100% - 48px); border: 0; background: var(--page); }
+  #page header, #page .tools, #page .theme-btn { display: none !important; }
 </style>
+<style id="brief-css"></style>
 </head>
 <body>
   <nav class="bar">
@@ -75,12 +78,13 @@
       </svg>
     </button>
   </nav>
-  <iframe id="frame" title="CapitalBuzz brief"></iframe>
+  <div id="page"></div>
 <script>
 (function () {
-  var frame = document.getElementById("frame");
   var nav = document.getElementById("dates");
+  var page = document.getElementById("page");
   var moon = document.getElementById("theme-toggle");
+  var briefCss = document.getElementById("brief-css");
   function themeNow() {
     try { return localStorage.getItem("cb-theme") || "light"; } catch (e) { return "light"; }
   }
@@ -91,25 +95,73 @@
     var dark = theme === "dark";
     moon.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
     moon.title = dark ? "Light" : "Dark";
-    try { frame.contentWindow.postMessage({ type: "cb-theme", theme: theme }, "*"); } catch (e) {}
   }
   applyTheme(themeNow());
   moon.addEventListener("click", function () {
     applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
   });
-  frame.addEventListener("load", function () {
-    try {
-      var doc = frame.contentDocument;
-      if (doc && !doc.getElementById("cb-shell-hide")) {
-        doc.documentElement.classList.add("in-shell");
-        var style = doc.createElement("style");
-        style.id = "cb-shell-hide";
-        style.textContent = "header{display:none!important}";
-        doc.head.appendChild(style);
-      }
-    } catch (e) {}
-    applyTheme(themeNow());
-  });
+  function bindCollapse() {
+    var collapsed = {};
+    try { collapsed = JSON.parse(localStorage.getItem("cb-collapsed") || "{}") || {}; } catch (e) {}
+    var sections = Array.prototype.slice.call(page.querySelectorAll("section[id]"));
+    function save() {
+      try { localStorage.setItem("cb-collapsed", JSON.stringify(collapsed)); } catch (e) {}
+    }
+    function allClosed() {
+      return sections.every(function (sec) {
+        var d = sec.querySelector("details");
+        return d && !d.open;
+      });
+    }
+    function syncAllBtn() {
+      var btn = document.getElementById("collapse-all");
+      if (!btn) return;
+      var closed = allClosed();
+      btn.setAttribute("data-all", closed ? "closed" : "open");
+      btn.setAttribute("aria-label", closed ? "Expand all" : "Collapse all");
+      btn.title = closed ? "Expand all" : "Collapse all";
+    }
+    sections.forEach(function (sec) {
+      var d = sec.querySelector("details");
+      if (!d) return;
+      if (collapsed[sec.id]) d.removeAttribute("open");
+      d.addEventListener("toggle", function () {
+        collapsed[sec.id] = !d.open;
+        save();
+        syncAllBtn();
+      });
+    });
+    var allBtn = document.getElementById("collapse-all");
+    if (allBtn) {
+      allBtn.addEventListener("click", function () {
+        var close = !allClosed();
+        sections.forEach(function (sec) {
+          var d = sec.querySelector("details");
+          if (!d) return;
+          if (close) d.removeAttribute("open");
+          else d.setAttribute("open", "");
+          collapsed[sec.id] = close;
+        });
+        save();
+        syncAllBtn();
+      });
+    }
+    syncAllBtn();
+  }
+  function show(file) {
+    fetch(file, { cache: "no-store" }).then(function (r) { return r.text(); }).then(function (html) {
+      var parsed = new DOMParser().parseFromString(html, "text/html");
+      var css = "";
+      Array.prototype.forEach.call(parsed.querySelectorAll("style"), function (s) { css += s.textContent + "\n"; });
+      briefCss.textContent = css;
+      var hdr = parsed.querySelector("header");
+      if (hdr) hdr.remove();
+      Array.prototype.forEach.call(parsed.querySelectorAll("script"), function (s) { s.remove(); });
+      page.innerHTML = parsed.body.innerHTML;
+      bindCollapse();
+      applyTheme(themeNow());
+    });
+  }
   function hash() { return (location.hash || "").replace(/^#/, ""); }
   function pick(list) {
     var h = hash();
@@ -132,7 +184,7 @@
     list.slice(1).forEach(function (item) {
       nav.appendChild(chip("#" + item.date, item.label, item.date === current.date));
     });
-    frame.src = current.file;
+    show(current.file);
     document.title = onCurrent ? "CapitalBuzz" : "CapitalBuzz — " + current.label;
   }
   function load(list) {
