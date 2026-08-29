@@ -55,24 +55,30 @@
 (function () {
   var frame = document.getElementById("frame");
   var nav = document.getElementById("dates");
+  function hash() { return (location.hash || "").replace(/^#/, ""); }
   function pick(list) {
-    var hash = (location.hash || "").replace(/^#/, "");
-    if (hash) {
-      for (var i = 0; i < list.length; i++) if (list[i].date === hash) return list[i];
-    }
+    var h = hash();
+    if (!h || h === "current") return list[0];
+    for (var i = 0; i < list.length; i++) if (list[i].date === h) return list[i];
     return list[0];
+  }
+  function chip(href, label, on) {
+    var a = document.createElement("a");
+    a.href = href;
+    a.textContent = label;
+    if (on) a.setAttribute("aria-current", "page");
+    return a;
   }
   function draw(list, current) {
     nav.innerHTML = "";
-    list.forEach(function (item) {
-      var a = document.createElement("a");
-      a.href = "#" + item.date;
-      a.textContent = item.label;
-      if (item.date === current.date) a.setAttribute("aria-current", "page");
-      nav.appendChild(a);
+    var latest = list[0];
+    var onCurrent = current.date === latest.date;
+    nav.appendChild(chip("#current", "Current", onCurrent));
+    list.slice(1).forEach(function (item) {
+      nav.appendChild(chip("#" + item.date, item.label, item.date === current.date));
     });
-    frame.src = item.file;
-    document.title = "CapitalBuzz — " + current.label;
+    frame.src = current.file;
+    document.title = onCurrent ? "CapitalBuzz" : "CapitalBuzz — " + current.label;
   }
   function load(list) {
     if (!list || !list.length) return;
