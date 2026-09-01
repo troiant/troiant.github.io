@@ -1,1 +1,205 @@
-PLACEHOLDER
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CapitalBuzz — Tuesday Sep 1, 2026</title><style>
+:root {
+--page: #ffffff; --surface: #ffffff; --alt: #f6f6f4;
+--ink: #111111; --muted: #6f6f6c; --line: #e6e6e3; --accent: #111111;
+--up: #1a7f37; --down: #c62828; --range: #6f6f6c;
+--pill-bull: #e7f6ec; --pill-bear: #fdecea; --pill-rng: #efefed;
+--bg: linear-gradient(180deg, #ffffff 0%, #f7f7f5 52%, #f2f2f0 100%);
+--header-bg: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+--tip: #ffffff; --pane: #f4f4f2; --shadow: 0 6px 16px rgba(0,0,0,.08);
+}
+html[data-theme="dark"] {
+--page: #111111; --surface: #171717; --alt: #1c1c1c;
+--ink: #f2f2f0; --muted: #9a9a96; --line: #2e2e2c; --accent: #f2f2f0;
+--up: #3dba63; --down: #ef6a6a; --range: #9a9a96;
+--pill-bull: #1a3d28; --pill-bear: #3d1c1c; --pill-rng: #2a2a28;
+--bg: linear-gradient(180deg, #111111 0%, #161616 52%, #1a1a18 100%);
+--header-bg: linear-gradient(180deg, #111111 0%, #171717 100%);
+--pane: #1a1a18;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--page); color: var(--ink); }
+body {
+font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+font-size: 0.88rem; line-height: 1.32;
+background: var(--bg); min-height: 100vh;
+}
+header {
+background: var(--header-bg);
+border-bottom: 2px solid var(--accent);
+padding: 16px 24px 12px;
+display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+}
+.header-text { flex: 1; min-width: 0; }
+h1 { font-family: Georgia, "Times New Roman", serif; font-size: 1.28rem; margin: 0 0 4px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.bolt { width: 0.92em; height: 0.92em; color: var(--accent); flex: 0 0 auto; display: block; }
+h2 { font-family: Georgia, "Times New Roman", serif; font-size: 0.95rem; margin: 0; font-weight: 600; }
+section { margin-top: 14px; }
+section details { margin: 0; }
+section summary {
+display: flex; align-items: center; gap: 8px;
+list-style: none; cursor: pointer;
+padding: 10px 0 8px;
+border-bottom: 1px solid var(--line);
+user-select: none;
+}
+section summary::-webkit-details-marker { display: none; }
+section summary::marker { content: ""; }
+.sec-ico {
+width: 0.72em; height: 0.72em; flex: 0 0 auto;
+color: var(--muted);
+transform: rotate(-90deg);
+transition: transform .12s ease;
+}
+details[open] > summary .sec-ico { transform: rotate(0deg); color: var(--ink); }
+.sec-body { padding-top: 8px; }
+.all-toggle {
+display: flex; align-items: center; gap: 0;
+margin: 10px 0 0; padding: 4px 0 2px;
+border: 0; background: none;
+color: var(--muted); cursor: pointer;
+}
+.all-toggle .sec-ico { margin-right: -2px; }
+.all-toggle[data-all="closed"] .sec-ico { transform: rotate(0deg); color: var(--ink); }
+.all-toggle:hover, .all-toggle:hover .sec-ico { color: var(--ink); }
+.all-toggle + section { margin-top: 0; }
+.sub { color: var(--muted); font-size: 0.8rem; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 14px 24px 40px; }
+.thesis {
+background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+padding: 8px 12px; margin: 12px 0 6px; font-size: 0.92rem;
+}
+.tools { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.theme-btn {
+width: 34px; height: 34px; border: 1px solid var(--line); background: var(--surface);
+color: var(--ink); border-radius: 999px; cursor: pointer; display: grid; place-items: center; padding: 0;
+}
+.theme-btn:hover { border-color: var(--accent); }
+.theme-btn svg { width: 16px; height: 16px; }
+.icon-sun { display: none; }
+html[data-theme="dark"] .icon-moon { display: none; }
+html[data-theme="dark"] .icon-sun { display: block; }
+.sheet-head, .row {
+display: grid; gap: 8px; align-items: center;
+padding: 6px 7px; border-bottom: 1px solid var(--line);
+}
+.sheet-head {
+color: var(--muted); font-weight: 600; font-size: 0.64rem;
+text-transform: uppercase; letter-spacing: 0.03em;
+}
+.sheet .row:nth-child(even) { background: var(--alt); }
+#sec-today .sheet-head, #sec-today .row { grid-template-columns: 4.2rem 5.2rem 6.4rem 8.8rem 1fr 7.5rem; }
+#sec-indices .sheet-head, #sec-indices .row { grid-template-columns: 4.2rem 6.4rem 5rem 5.6rem 8rem 7.5rem; }
+#sec-magx .sheet-head, #sec-magx .row { grid-template-columns: 4.2rem 6.4rem 5rem 5.6rem 8rem 1fr 7.5rem; }
+#sec-week .sheet-head, #sec-week .row { grid-template-columns: 10rem 1fr; }
+#sec-sector .sheet-head, #sec-sector .row { grid-template-columns: 7rem 1fr; }
+.c-name { font-weight: 650; }
+.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.up { color: var(--up); } .down { color: var(--down); }
+.why { color: var(--muted); }
+.pat-note { color: var(--muted); font-size: 0.62rem; }
+.pat {
+position: relative; display: inline-block; font-size: 0.62rem; font-weight: 600;
+cursor: help; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-skip-ink: none;
+}
+.pat.bull { color: var(--up); text-decoration: underline; text-decoration-color: var(--up); }
+.pat.bear { color: var(--down); text-decoration: underline; text-decoration-color: var(--down); }
+.pat.rng { color: var(--ink); text-decoration: underline; text-decoration-color: var(--ink); }
+.pat-tip {
+display: none; position: absolute; left: 0; bottom: calc(100% + 8px); z-index: 20;
+background: var(--tip); border: 1px solid var(--line); padding: 8px 10px 6px; box-shadow: var(--shadow); pointer-events: none;
+}
+.pat-tip svg { display: block; width: 112px; height: 62px; }
+.pat:hover .pat-tip, .pat:focus .pat-tip { display: block; }
+.dir {
+display: inline-block; font-weight: 800; font-size: 0.72rem; letter-spacing: 0.04em;
+text-transform: uppercase; padding: 3px 7px; min-width: 5.4rem; text-align: center;
+}
+.dir.bull { background: var(--pill-bull); color: var(--up); }
+.dir.bear { background: var(--pill-bear); color: var(--down); }
+.dir.rng { background: var(--pill-rng); color: var(--range); }
+.row[data-dir="bull"] { --dir-color: var(--up); }
+.row[data-dir="bear"] { --dir-color: var(--down); }
+.row[data-dir="rng"] { --dir-color: var(--range); }
+dl { margin: 0; font-size: 0.82rem; }
+dt { font-weight: 600; margin-top: 8px; }
+dd { margin: 2px 0 0 0; color: var(--muted); }
+html.in-shell header { display: none; }
+html.in-shell body { min-height: 0; }
+@media (max-width: 900px) {
+#sec-today .sheet-head, #sec-today .row,
+#sec-indices .sheet-head, #sec-indices .row,
+#sec-magx .sheet-head, #sec-magx .row { grid-template-columns: 1fr 1fr; }
+}
+</style></head><body><header><div class="header-text"><h1><svg class="bolt" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13 2 4 14h7l-1 8 10-12h-7z"/></svg>CapitalBuzz</h1><div class="sub">Tuesday Sep 1, 2026 · into the open · Today, Mag X, Indices</div></div><div class="tools"><button type="button" class="theme-btn" id="theme-toggle" aria-label="Switch to dark theme" title="Dark"><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 14.3A8.5 8.5 0 0 1 9.7 3 7.5 7.5 0 1 0 21 14.3z"/></svg><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></div></header><div class="wrap"><p class="thesis">JOLTS job openings at 9:00 AM CT. Tesla jumped Monday; Amazon and Google slipped.</p><button type="button" class="all-toggle" id="collapse-all" aria-label="Collapse all" title="Collapse all"><svg class="sec-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3.2 5.4 8 10.2l4.8-4.8 1.1 1.1L8 12.4 2.1 6.5z"/></svg><svg class="sec-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3.2 5.4 8 10.2l4.8-4.8 1.1 1.1L8 12.4 2.1 6.5z"/></svg></button><section id="sec-today"><details open><summary><svg class="sec-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3.2 5.4 8 10.2l4.8-4.8 1.1 1.1L8 12.4 2.1 6.5z"/></svg><h2>Today's List</h2></summary><div class="sec-body"><p class="sub">Same names as the Robinhood Today watchlist. If two events hit the same name, both are listed.</p><div class="sheet"><div class="sheet-head"><span>Name</span><span>Sector</span><span>Prev Week</span><span>When</span><span>Catalyst</span><span>Pattern</span></div><article class="row" data-dir="bull" data-sector="Computers"><div class="c-name">DELL</div><div class="c-sector">Computers</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-when">Tue Sep 1 after close</div><div class="c-catalyst">Earnings.</div><div class="c-pat"></div></article><article class="row" data-dir="bull" data-sector="Software"><div class="c-name">PANW</div><div class="c-sector">Software</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-when">Tue Sep 1 after close</div><div class="c-catalyst">Earnings.</div><div class="c-pat"></div></article><article class="row" data-dir="bull" data-sector="Chips"><div class="c-name">CRDO</div><div class="c-sector">Chips</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-when">Tue Sep 1 after close</div><div class="c-catalyst">Earnings.</div><div class="c-pat"></div></article><article class="row" data-dir="bull" data-sector="Software"><div class="c-name">MDB</div><div class="c-sector">Software</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-when">Tue Sep 1 after close</div><div class="c-catalyst">Earnings.</div><div class="c-pat"></div></article><article class="row" data-dir="rng" data-sector="Chips"><div class="c-name">AVGO</div><div class="c-sector">Chips</div><div class="c-dir"><span class="dir rng">Range</span></div><div class="c-when">Wed Sep 2 after close</div><div class="c-catalyst">Earnings. Biggest chip name on the list after Nvidia.</div><div class="c-pat"></div></article><article class="row" data-dir="rng" data-sector="Software"><div class="c-name">SNOW</div><div class="c-sector">Software</div><div class="c-dir"><span class="dir rng">Range</span></div><div class="c-when">Wed Sep 2 after close</div><div class="c-catalyst">Earnings.</div><div class="c-pat"></div></article><article class="row" data-dir="rng" data-sector="Computers"><div class="c-name">HPE</div><div class="c-sector">Computers</div><div class="c-dir"><span class="dir rng">Range</span></div><div class="c-when">Wed Sep 2 after close</div><div class="c-catalyst">Earnings.</div><div class="c-pat"></div></article><article class="row" data-dir="rng" data-sector="Apparel"><div class="c-name">LULU</div><div class="c-sector">Apparel</div><div class="c-dir"><span class="dir rng">Range</span></div><div class="c-when">Thu Sep 3 after close</div><div class="c-catalyst">Earnings.</div><div class="c-pat"></div></article></div><p class="sub">Catalyst types: Earnings = company reports numbers. Macro = Fed, jobs, inflation, or other scheduled news that hits the whole market. Deal = named buy/sell of a company. Partnership = named business tie-up. Loss = named lost customer, contract, or product.</p></div></details></section><section id="sec-indices"><details open><summary><svg class="sec-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3.2 5.4 8 10.2l4.8-4.8 1.1 1.1L8 12.4 2.1 6.5z"/></svg><h2>Indices</h2></summary><div class="sec-body"><div class="sheet"><div class="sheet-head"><span>Name</span><span>Prev Week</span><span>Close</span><span>Vs Prior Day</span><span>High / Low</span><span>Pattern</span></div><article class="row" data-dir="rng"><div class="c-name">SPY</div><div class="c-dir"><span class="dir rng">Range</span></div><div class="c-close num">767.05</div><div class="c-vs num down">−0.3%</div><div class="c-hl num">768.00 / 764.72</div><div class="c-pat"></div></article><article class="row" data-dir="bull"><div class="c-name">QQQ</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-close num">716.76</div><div class="c-vs num">+0.0%</div><div class="c-hl num">717.58 / 713.16</div><div class="c-pat"></div></article><article class="row" data-dir="bear"><div class="c-name">IWM</div><div class="c-dir"><span class="dir bear">Bearish</span></div><div class="c-close num">293.93</div><div class="c-vs num down">−0.6%</div><div class="c-hl num">295.35 / 292.70</div><div class="c-pat"></div></article></div><p class="sub">Prev week = last full week (Aug 24–28). Monday mixed into the open.</p></div></details></section><section id="sec-magx"><details open><summary><svg class="sec-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3.2 5.4 8 10.2l4.8-4.8 1.1 1.1L8 12.4 2.1 6.5z"/></svg><h2>Mag X</h2></summary><div class="sec-body"><div class="sheet"><div class="sheet-head"><span>Name</span><span>Prev Week</span><span>Close</span><span>Vs Prior Day</span><span>High / Low</span><span>Why</span><span>Pattern</span></div><article class="row" data-dir="rng"><div class="c-name">NVDA</div><div class="c-dir"><span class="dir rng">Range</span></div><div class="c-close num">220.78</div><div class="c-vs num up">+1.5%</div><div class="c-hl num">221.30 / 216.21</div><div class="c-why why">Bounced after Friday’s fade. Quiet.</div><div class="c-pat"></div></article><article class="row" data-dir="bear"><div class="c-name">TSLA</div><div class="c-dir"><span class="dir bear">Bearish</span></div><div class="c-close num">367.95</div><div class="c-vs num up">+5.5%</div><div class="c-hl num">368.92 / 347.15</div><div class="c-why why">Big Monday bounce. Quiet.</div><div class="c-pat"></div></article><article class="row" data-dir="bull"><div class="c-name">MSFT</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-close num">507.29</div><div class="c-vs num down">−1.2%</div><div class="c-hl num">512.19 / 506.39</div><div class="c-why why">Gave back some of Friday’s gain.</div><div class="c-pat"></div></article><article class="row" data-dir="bull"><div class="c-name">AAPL</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-close num">316.85</div><div class="c-vs num down">−0.9%</div><div class="c-hl num">321.24 / 312.80</div><div class="c-why why">Soft after Friday’s push.</div><div class="c-pat"></div></article><article class="row" data-dir="bull"><div class="c-name">SPCX</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-close num">143.69</div><div class="c-vs num up">+1.5%</div><div class="c-hl num">144.13 / 139.88</div><div class="c-why why">Quiet grind higher.</div><div class="c-pat"></div></article><article class="row" data-dir="rng"><div class="c-name">GOOGL</div><div class="c-dir"><span class="dir rng">Range</span></div><div class="c-close num">339.35</div><div class="c-vs num down">−2.1%</div><div class="c-hl num">344.59 / 337.16</div><div class="c-why why">Soft Monday. Quiet.</div><div class="c-pat"></div></article><article class="row" data-dir="bull"><div class="c-name">META</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-close num">572.34</div><div class="c-vs num down">−1.0%</div><div class="c-hl num">578.67 / 569.14</div><div class="c-why why">Soft after Friday’s bounce.</div><div class="c-pat"></div></article><article class="row" data-dir="bull"><div class="c-name">AMZN</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-close num">259.77</div><div class="c-vs num down">−2.5%</div><div class="c-hl num">264.36 / 257.12</div><div class="c-why why">Gave back Friday’s bounce.</div><div class="c-pat"></div></article><article class="row" data-dir="bull"><div class="c-name">PLTR</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-close num">186.38</div><div class="c-vs num">+0.0%</div><div class="c-hl num">187.94 / 183.79</div><div class="c-why why">Flat. Quiet.</div><div class="c-pat"></div></article><article class="row" data-dir="bull"><div class="c-name">NFLX</div><div class="c-dir"><span class="dir bull">Bullish</span></div><div class="c-close num">81.05</div><div class="c-vs num down">−0.8%</div><div class="c-hl num">81.73 / 80.65</div><div class="c-why why">Soft. Quiet.</div><div class="c-pat"></div></article></div></div></details></section><section id="sec-week"><details open><summary><svg class="sec-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3.2 5.4 8 10.2l4.8-4.8 1.1 1.1L8 12.4 2.1 6.5z"/></svg><h2>This week</h2></summary><div class="sec-body"><div class="sheet"><div class="sheet-head"><span>When (CT)</span><span>Event</span></div><article class="row"><div>Tue 9:00 AM</div><div>JOLTS job openings (July).</div></article><article class="row"><div>Tue after close</div><div>DELL, PANW, CRDO, MDB report.</div></article><article class="row"><div>Wed after close</div><div>AVGO, SNOW, HPE report.</div></article><article class="row"><div>Thu after close</div><div>LULU reports.</div></article><article class="row"><div>Fri 7:30 AM</div><div>Nonfarm payrolls (August).</div></article></div></div></details></section><section id="sec-sector"><details open><summary><svg class="sec-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3.2 5.4 8 10.2l4.8-4.8 1.1 1.1L8 12.4 2.1 6.5z"/></svg><h2>Sector(s) of the Week</h2></summary><div class="sec-body"><div class="sheet"><div class="sheet-head"><span>Sector</span><span>Why</span></div></div></div></details></section><section id="sec-legend"><details open><summary><svg class="sec-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3.2 5.4 8 10.2l4.8-4.8 1.1 1.1L8 12.4 2.1 6.5z"/></svg><h2>Legend</h2></summary><div class="sec-body"><dl><dt>Tape</dt><dd>Today’s live market. How prices are moving in the cash session. Not overnight, and not one company’s news.</dd><dt>Close</dt><dd>Last official cash-session price. Not overnight.</dd><dt>Vs Prior Day</dt><dd>Last close compared with the cash session before it.</dd><dt>High / Low</dt><dd>Highest and lowest prices in the last cash session.</dd><dt>Prev Week</dt><dd>Last full week (Aug 24–28). Bullish = week closed clearly up. Bearish = week closed clearly down. Range = small or sideways week. This week (Aug 31–Sep 4) is not done yet, so it is not used here.</dd><dt>Pattern</dt><dd>Only if it is obvious on the weekly chart. Small underline: green bull, red bear, black range. Hover the name for the drawing. Empty means none.</dd><dt>Earnings</dt><dd>Company reports profit and sales. After close means the number hits after 3:00 PM CT.</dd><dt>Macro</dt><dd>Scheduled news that moves the whole market (Fed speech, jobs, inflation).</dd><dt>Deal</dt><dd>A named buy, sale, or merger. Written as “Acquiring Company X for reason Y.”</dd><dt>Partnership</dt><dd>A named business tie-up. Written as “Partnered with Company Y for reason X.”</dd><dt>Expansion</dt><dd>A new market, product, or region. Written as “Expanding into X for reason Y.”</dd><dt>Loss</dt><dd>A named lost customer, contract, or product. Written as “Losing chip business due to reason X.”</dd><dt>Multiple</dt><dd>Two or more of the above on the same name, joined with +.</dd></dl></div></details></section></div><script>
+(function () {
+var root = document.documentElement;
+var moon = document.getElementById("theme-toggle");
+function applyTheme(theme) {
+if (theme === "dark") root.setAttribute("data-theme", "dark");
+else root.removeAttribute("data-theme");
+try { localStorage.setItem("cb-theme", theme); } catch (e) {}
+var dark = theme === "dark";
+if (moon) {
+moon.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+moon.title = dark ? "Light" : "Dark";
+}
+}
+if (window.self !== window.top) document.documentElement.classList.add("in-shell");
+window.addEventListener("message", function (e) {
+if (e.data && e.data.type === "cb-theme") applyTheme(e.data.theme);
+});
+var theme = "light";
+try { theme = localStorage.getItem("cb-theme") || "light"; } catch (e) {}
+applyTheme(theme);
+if (moon) moon.addEventListener("click", function () {
+applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+});
+var collapsed = {};
+try { collapsed = JSON.parse(localStorage.getItem("cb-collapsed") || "{}") || {}; } catch (e) {}
+var sections = Array.prototype.slice.call(document.querySelectorAll("section[id]"));
+function save() {
+try { localStorage.setItem("cb-collapsed", JSON.stringify(collapsed)); } catch (e) {}
+}
+function allClosed() {
+return sections.every(function (sec) {
+var d = sec.querySelector("details");
+return d && !d.open;
+});
+}
+function syncAllBtn() {
+var btn = document.getElementById("collapse-all");
+if (!btn) return;
+var closed = allClosed();
+btn.setAttribute("data-all", closed ? "closed" : "open");
+btn.setAttribute("aria-label", closed ? "Expand all" : "Collapse all");
+btn.title = closed ? "Expand all" : "Collapse all";
+}
+sections.forEach(function (sec) {
+var d = sec.querySelector("details");
+if (!d) return;
+if (collapsed[sec.id]) d.removeAttribute("open");
+d.addEventListener("toggle", function () {
+collapsed[sec.id] = !d.open;
+save();
+syncAllBtn();
+});
+});
+var allBtn = document.getElementById("collapse-all");
+if (allBtn) {
+allBtn.addEventListener("click", function () {
+var close = !allClosed();
+sections.forEach(function (sec) {
+var d = sec.querySelector("details");
+if (!d) return;
+if (close) d.removeAttribute("open");
+else d.setAttribute("open", "");
+collapsed[sec.id] = close;
+});
+save();
+syncAllBtn();
+});
+}
+syncAllBtn();
+})();
+</script></body></html>
