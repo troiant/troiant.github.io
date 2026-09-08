@@ -1,5 +1,10 @@
 [
   {
+    "date": "2026-09-08",
+    "label": "Tue Sep 8",
+    "file": "capitalbuzz-2026-09-08.html"
+  },
+  {
     "date": "2026-09-07",
     "label": "Mon Sep 7",
     "file": "capitalbuzz-2026-09-07.html"
@@ -43,10 +48,5 @@
     "date": "2026-08-26",
     "label": "Wed Aug 26",
     "file": "capitalbuzz-2026-08-26.html"
-  },
-  {
-    "date": "2026-08-25",
-    "label": "Tue Aug 25",
-    "file": "capitalbuzz-2026-08-25.html"
   }
 ]
