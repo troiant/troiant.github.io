@@ -149,7 +149,20 @@
     syncAllBtn();
   }
   function show(file) {
-    fetch(file, { cache: "no-store" }).then(function (r) { return r.text(); }).then(function (html) {
+    fetch(file, { cache: "no-store" }).then(function (r) { return r.text(); }).then(async function (html) {
+      var partPrefix = html.match(/fetch\("([^"]+\.part)"\s*\+\s*i/);
+      if (partPrefix) {
+        try {
+          var parts = await Promise.all([1, 2, 3].map(function (i) {
+            return fetch(partPrefix[1] + i + ".txt", { cache: "no-store" }).then(function (r) { return r.text(); });
+          }));
+          var bin = Uint8Array.from(atob(parts.join("")), function (c) { return c.charCodeAt(0); });
+          html = await new Response(new Blob([bin]).stream().pipeThrough(new DecompressionStream("gzip"))).text();
+        } catch (e) {
+          page.textContent = "Failed to load desk: " + e;
+          return;
+        }
+      }
       var parsed = new DOMParser().parseFromString(html, "text/html");
       var css = "";
       Array.prototype.forEach.call(parsed.querySelectorAll("style"), function (s) { css += s.textContent + "\n"; });
@@ -162,6 +175,7 @@
       applyTheme(themeNow());
     });
   }
+
   function hash() { return (location.hash || "").replace(/^#/, ""); }
   function pick(list) {
     var h = hash();
