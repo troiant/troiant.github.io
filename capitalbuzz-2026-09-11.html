@@ -1,0 +1,10 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CapitalBuzz — Friday Sep 11, 2026</title></head><body><p>Loading desk…</p><script>
+(async function(){
+const parts=await Promise.all([1,2,3].map(i=>fetch("cb-2026-09-11.part"+i+".txt").then(r=>r.text())));
+const b64=parts.join("");
+const bin=Uint8Array.from(atob(b64), c=>c.charCodeAt(0));
+const ds=new DecompressionStream("gzip");
+const html=await new Response(new Blob([bin]).stream().pipeThrough(ds)).text();
+document.open(); document.write(html); document.close();
+})().catch(e=>{document.body.textContent="Failed to load desk: "+e;});
+</script></body></html>
